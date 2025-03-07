@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat2-app-service
+  labels:
+    app.kubernetes.io/name: chat2
+    app.kubernetes.io/instance: chat2
+    app.kubernetes.io/version: "1.0.0"
+spec:
+  selector:
+    app.kubernetes.io/name: chat2
+    app.kubernetes.io/instance: chat2
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: prometheus
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: chat2-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:194722398200:certificate/4cbe706c-db23-46b7-a98f-42f251a47e53
+    alb.ingress.kubernetes.io/success-codes: 200-399
+    alb.ingress.kubernetes.io/load-balancer-name: chat2-ingress-alb
+    alb.ingress.kubernetes.io/group.name: study
+spec:
+  ingressClassName: alb
+  rules:
+    - host: chat2.site
+      http:
+        paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat2-app-service
+                port:
+                  number: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat2-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: chat2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: chat2
+    spec:
+      containers:
+        - name: chat2-app-container
+          image: 194722398200.dkr.ecr.ap-northeast-2.amazonaws.com/chat2
+          ports:
+            - protocol: TCP
+              containerPort: 8080
