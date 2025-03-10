@@ -33,6 +33,8 @@ metadata:
     alb.ingress.kubernetes.io/success-codes: 200-399
     alb.ingress.kubernetes.io/load-balancer-name: chat2-ingress-alb
     alb.ingress.kubernetes.io/group.name: study
+    # 리소스 자동 할당
+    kubernetes.io/ingress.class: alb
 spec:
   ingressClassName: alb
   rules:
