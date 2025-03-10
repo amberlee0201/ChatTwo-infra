@@ -4,12 +4,10 @@ metadata:
   name: chat2-app-service
   labels:
     app.kubernetes.io/name: chat2
-    app.kubernetes.io/instance: chat2
     app.kubernetes.io/version: "1.0.0"
 spec:
   selector:
     app.kubernetes.io/name: chat2
-    app.kubernetes.io/instance: chat2
   type: ClusterIP
   ports:
     - name: http
