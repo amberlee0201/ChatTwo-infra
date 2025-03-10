@@ -52,7 +52,7 @@ kind: Deployment
 metadata:
   name: chat2-app-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: chat2
