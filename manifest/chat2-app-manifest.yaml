@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
         - name: chat2-app-container
-          image: 194722398200.dkr.ecr.ap-northeast-2.amazonaws.com/chat2:99aa10973fcd98fb9feb7bf469b054f89f5fee22
+          image: 194722398200.dkr.ecr.ap-northeast-2.amazonaws.com/chat2:c40f84c4710bd37cb8c72d3c49ddc6d9c76e3a19
           ports:
             - protocol: TCP
               containerPort: 8080
